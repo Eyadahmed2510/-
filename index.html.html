@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مطعم العائم</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F0F8FF;
+    --warm-white: #FAFEFF;
+    --gold: #C8973A;
+    --gold-light: #E8C47A;
+    --gold-pale: #EDF6FF;
+    --brown: #1A5276;
+    --brown-light: #2471A3;
+    --text-dark: #0D3349;
+    --text-medium: #1F618D;
+    --text-light: #5B9DC8;
+    --border: #B8DCF0;
+    --section-bg: #F4FBFF;
+    --tag-bg: #DFF0FA;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text-dark);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Floating ocean background icons */
+  .bg-canvas {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .bg-icon {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.07;
+    animation: floatIcon linear infinite;
+    user-select: none;
+  }
+
+  @keyframes floatIcon {
+    0%   { transform: translateY(110vh) rotate(0deg); }
+    100% { transform: translateY(-15vh) rotate(20deg); }
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(160deg, #E8F6FF 0%, #D0EEFF 40%, #C5E8FA 100%);
+    border-bottom: 2px solid #90CCE8;
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 80%, rgba(100,180,230,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(70,160,220,0.10) 0%, transparent 50%);
+  }
+
+  /* Animated wave at bottom of header */
+  .wave-wrap {
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 28px;
+    overflow: hidden;
+  }
+
+  .wave-wrap svg { width: 200%; animation: waveSlide 5s linear infinite; }
+
+  @keyframes waveSlide {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ornament {
+    color: #2E86C1;
+    font-size: 26px;
+    letter-spacing: 10px;
+    display: block;
+    margin-bottom: 8px;
+    opacity: 0.6;
+  }
+
+  .restaurant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 7vw, 60px);
+    color: #154360;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+    position: relative;
+    text-shadow: 0 2px 12px rgba(30,100,160,0.12);
+  }
+
+  .restaurant-name-ar {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(28px, 5vw, 46px);
+    color: #1A5276;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .tagline {
+    color: #5B9DC8;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .divider-gold {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 auto;
+    max-width: 340px;
+  }
+
+  .divider-gold::before,
+  .divider-gold::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #5B9DC8);
+  }
+
+  .divider-gold::after {
+    background: linear-gradient(to left, transparent, #5B9DC8);
+  }
+
+  .diamond {
+    width: 8px;
+    height: 8px;
+    background: #2E86C1;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* Navigation tabs */
+  .nav-wrapper {
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(30,100,160,0.08);
+  }
+
+  .nav-tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    padding: 0 16px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .nav-tabs::-webkit-scrollbar { display: none; }
+
+  .nav-tab {
+    padding: 14px 20px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    border: none;
+    background: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-tab:hover { color: #2E86C1; }
+  .nav-tab.active {
+    color: #154360;
+    border-bottom-color: #2E86C1;
+    font-weight: 700;
+  }
+
+  /* Main content */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Sections */
+  .section {
+    display: none;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    padding: 40px 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #D6EEF8, #B8DCEF);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    border: 1.5px solid #90CCE8;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    color: #154360;
+    font-weight: 700;
+  }
+
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Menu grid */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm-white);
+    transition: background 0.2s;
+    gap: 12px;
+  }
+
+  .menu-item:first-child { border-radius: 12px 12px 0 0; border-top: 1px solid var(--border); }
+  .menu-item:last-child { border-radius: 0 0 12px 12px; }
+  .menu-item:only-child { border-radius: 12px; border-top: 1px solid var(--border); }
+  .menu-item:hover { background: #EAF5FD; }
+
+  .item-info { flex: 1; }
+
+  .item-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+    line-height: 1.4;
+  }
+
+  .item-desc {
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .price-badge {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #154360;
+    background: #D6EEF8;
+    border: 1px solid #90CCE8;
+    border-radius: 8px;
+    padding: 4px 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .price-badge span {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-light);
+  }
+
+  /* Dual price (e.g. half/full) */
+  .price-dual {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .price-label {
+    font-size: 10px;
+    color: var(--text-light);
+    background: var(--tag-bg);
+    border-radius: 4px;
+    padding: 1px 6px;
+  }
+
+  .price-num {
+    font-size: 14px;
+    font-weight: 700;
+    color: #154360;
+    background: #D6EEF8;
+    border: 1px solid #90CCE8;
+    border-radius: 6px;
+    padding: 2px 10px;
+  }
+
+  /* Note strip */
+  .note-strip {
+    background: linear-gradient(to left, #EBF5FB, #D6EEF8);
+    border: 1px dashed #90CCE8;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #1F618D;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .note-strip::before { content: '🌊'; font-size: 12px; }
+
+  /* Pizza size note */
+  .size-note {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: var(--text-light);
+    justify-content: flex-end;
+    padding: 0 4px;
+  }
+
+  .size-note span {
+    background: var(--tag-bg);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* Family tray */
+  .tray-card {
+    background: linear-gradient(135deg, #F0F9FF, #E4F3FC);
+    border: 1.5px solid #90CCE8;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tray-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, rgba(46,134,193,0.10), transparent 70%);
+  }
+
+  .tray-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .tray-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #154360;
+    line-height: 1.3;
+  }
+
+  .tray-serves {
+    font-size: 11px;
+    color: #2E86C1;
+    font-weight: 500;
+    background: #D6EEF8;
+    border-radius: 20px;
+    padding: 2px 10px;
+    white-space: nowrap;
+    border: 1px solid #90CCE8;
+    flex-shrink: 0;
+  }
+
+  .tray-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #154360;
+    margin-bottom: 8px;
+  }
+
+  .tray-price span { font-size: 13px; font-weight: 400; color: var(--text-light); }
+
+  .tray-contents {
+    font-size: 12px;
+    color: #1F618D;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* Footer */
+  .menu-footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-ornament {
+    color: #2E86C1;
+    font-size: 22px;
+    letter-spacing: 8px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .footer-text {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .menu-item { padding: 14px 14px; }
+    .tray-card { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating ocean & food background icons -->
+<div class="bg-canvas" id="bgCanvas"></div>
+
+<div class="header">
+  <span class="ornament">🐟 🦐 🦞 🐠 🦑</span>
+  <span class="restaurant-name-ar">مطعم العائم</span>
+  <h1 class="restaurant-name">El A'em Restaurant</h1>
+  <p class="tagline">قائمة الطعام · Menu</p>
+  <div class="divider-gold"><div class="diamond"></div></div>
+  <div class="wave-wrap">
+    <svg viewBox="0 0 1440 28" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="28">
+      <path d="M0,14 C180,28 360,0 540,14 C720,28 900,0 1080,14 C1260,28 1440,0 1440,14 L1440,28 L0,28 Z" fill="#F0F8FF"/>
+      <path d="M0,20 C180,8 360,28 540,20 C720,8 900,28 1080,20 C1260,8 1440,28 1440,20 L1440,28 L0,28 Z" fill="rgba(176,216,235,0.4)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-wrapper">
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" onclick="showSection('grilled')">🔥 مشويات</button>
+    <button class="nav-tab" onclick="showSection('meat-meals')">🥩 وجبات لحوم</button>
+    <button class="nav-tab" onclick="showSection('chicken-meals')">🍗 وجبات فراخ</button>
+    <button class="nav-tab" onclick="showSection('mix-meals')">🍽️ وجبات ميكس</button>
+    <button class="nav-tab" onclick="showSection('mini-meals')">🧒 ميني ميلز</button>
+    <button class="nav-tab" onclick="showSection('family')">👨‍👩‍👧‍👦 صواني عيلة</button>
+    <button class="nav-tab" onclick="showSection('oriental')">🫕 أكلات شرقية</button>
+    <button class="nav-tab" onclick="showSection('italian')">🍝 إيطالي</button>
+    <button class="nav-tab" onclick="showSection('tajen')">🍲 طواجن</button>
+    <button class="nav-tab" onclick="showSection('pasta')">🍝 باستا</button>
+    <button class="nav-tab" onclick="showSection('pizza')">🍕 بيتزا</button>
+    <button class="nav-tab" onclick="showSection('sandwiches')">🥪 سندوتشات</button>
+    <button class="nav-tab" onclick="showSection('rizo')">🌯 ريزو</button>
+    <button class="nav-tab" onclick="showSection('feteer')">🫓 فطير</button>
+    <button class="nav-tab" onclick="showSection('soups')">🍜 شوربة</button>
+    <button class="nav-tab" onclick="showSection('appetizers')">🥗 مقبلات</button>
+    <button class="nav-tab" onclick="showSection('salads')">🥙 سلطات</button>
+    <button class="nav-tab" onclick="showSection('sides')">🍚 أطباق جانبية</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Grilled -->
+  <div class="section active" id="grilled">
+    <div class="section-header">
+      <div class="section-icon">🔥</div>
+      <div>
+        <div class="section-title">مشويات</div>
+        <div class="section-subtitle">Grilled</div>
+      </div>
+    </div>
+    <div class="size-note">
+      <span>نص كيلو</span>
+      <span>ثلث كيلو</span>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">نيفا ضاني</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">693 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">492 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">كباب بتلو</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">732 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">522 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ريش بتلو</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">819 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">567 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">كفته</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">567 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">385 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">مشكل (كباب وكفته)</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">662 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">453 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">كبده مشوي</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">662 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">453 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">شيش طاووق</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">378 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">291 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">صدور فيليه</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">416 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">316 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ميكس بيف (كباب - كفتة - ريش - كبده)</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">732 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">522 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ميكس تشيكين (شيش - صدور - دجاج تندوري)</div></div><div class="price-dual"><div class="price-row"><span class="price-label">نص</span><span class="price-num">442 جـ</span></div><div class="price-row"><span class="price-label">ثلث</span><span class="price-num">328 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فرخه مشوية</div></div><div class="price-badge">488 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">نص فرخة مشوية</div></div><div class="price-badge">253 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فرخه تندوري حار</div></div><div class="price-badge">488 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">نص فرخه تندوري حار</div></div><div class="price-badge">253 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فرخة مسحبة</div></div><div class="price-badge">508 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">نص فرخة مسحبة</div></div><div class="price-badge">263 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فرخة شيش تركي</div></div><div class="price-badge">488 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">نص فرخة شيش تركي</div></div><div class="price-badge">253 جـ</div></div>
+    </div>
+    <div class="note-strip">تُقدَّم مع عيش وسلطات</div>
+  </div>
+
+  <!-- Meat Meals -->
+  <div class="section" id="meat-meals">
+    <div class="section-header">
+      <div class="section-icon">🥩</div>
+      <div><div class="section-title">وجبات لحوم</div><div class="section-subtitle">Meat Meals</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة كفته وكباب</div></div><div class="price-badge">476 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة كفتة</div></div><div class="price-badge">422 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة كبدة بتلو مشوي</div></div><div class="price-badge">496 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة ميكس لحوم (كفتة وكباب وريش)</div></div><div class="price-badge">516 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة استيك مشوي</div></div><div class="price-badge">465 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة إسكالوب بانيه لحم</div></div><div class="price-badge">437 جـ</div></div>
+    </div>
+    <div class="note-strip">تُقدَّم مع أرز - سلطات - بطاطس &nbsp;|&nbsp; إضافة مكرونة بدل الأرز +40 جـ</div>
+  </div>
+
+  <!-- Chicken Meals -->
+  <div class="section" id="chicken-meals">
+    <div class="section-header">
+      <div class="section-icon">🍗</div>
+      <div><div class="section-title">وجبات فراخ</div><div class="section-subtitle">Chicken Meals</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة شيش طاووق</div></div><div class="price-badge">411 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة صدور مشوي</div></div><div class="price-badge">431 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة ميكس تشيكن</div></div><div class="price-badge">431 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة استربس</div></div><div class="price-badge">411 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة بانيه</div></div><div class="price-badge">411 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة تشيكن ميكسيكان</div></div><div class="price-badge">443 جـ</div></div>
+    </div>
+    <div class="note-strip">تُقدَّم مع أرز - سلطات - بطاطس &nbsp;|&nbsp; إضافة مكرونة بدل الأرز +40 جـ</div>
+  </div>
+
+  <!-- Mix Meals -->
+  <div class="section" id="mix-meals">
+    <div class="section-header">
+      <div class="section-icon">🍽️</div>
+      <div><div class="section-title">وجبات ميكس</div><div class="section-subtitle">Mix Meals</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة ميكس جريل</div></div><div class="price-badge">436 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة ميكس جريل VIP</div></div><div class="price-badge">516 جـ</div></div>
+    </div>
+    <div class="note-strip">تُقدَّم مع أرز - سلطات - بطاطس &nbsp;|&nbsp; إضافة مكرونة بدل الأرز +40 جـ</div>
+  </div>
+
+  <!-- Mini Meals -->
+  <div class="section" id="mini-meals">
+    <div class="section-header">
+      <div class="section-icon">🧒</div>
+      <div><div class="section-title">ميني ميلز</div><div class="section-subtitle">Mini Meals</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">سيخ كفتة - ربع فراخ</div></div><div class="price-badge">355 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وجبة أطفال (مكرونة ريد صوص - بانيه - بطاطس)</div></div><div class="price-badge">255 جـ</div></div>
+    </div>
+    <div class="note-strip">تُقدَّم مع أرز - سلطات - بطاطس</div>
+  </div>
+
+  <!-- Family Meals -->
+  <div class="section" id="family">
+    <div class="section-header">
+      <div class="section-icon">👨‍👩‍👧‍👦</div>
+      <div><div class="section-title">صواني عيلة</div><div class="section-subtitle">Family Meals</div></div>
+    </div>
+
+    <div class="tray-card">
+      <div class="tray-header">
+        <div class="tray-name">صنية 4 أفراد</div>
+        <span class="tray-serves">4 أفراد</span>
+      </div>
+      <div class="tray-price">1,532 <span>جنيه</span></div>
+      <div class="tray-contents">4 قطع كباب · 4 قطع كفتة · 4 قطع شيش طاووق · نصف فرخة مشوية · نجرسكو · 2 أرز · بطاطس · 4 كيس عيش · طحينة · سلطة · كلوسلو · مخلل</div>
+    </div>
+
+    <div class="tray-card">
+      <div class="tray-header">
+        <div class="tray-name">صنية 6 أفراد</div>
+        <span class="tray-serves">6 أفراد</span>
+      </div>
+      <div class="tray-price">1,732 <span>جنيه</span></div>
+      <div class="tray-contents">5 قطع كباب · 5 قطع كفتة · 3 قطع شيش طاووق · فرخة كاملة · نجرسكو · 3 أرز · بطاطس · 5 كيس عيش · طحينة · سلطة · كلوسلو · مخلل</div>
+    </div>
+
+    <div class="tray-card">
+      <div class="tray-header">
+        <div class="tray-name">صنية الصحاب</div>
+        <span class="tray-serves">6 - 7 أفراد</span>
+      </div>
+      <div class="tray-price">3,932 <span>جنيه</span></div>
+      <div class="tray-contents">فرخة كاملة · 6 شيش طاووق · 6 صدور مشوى · 6 كباب · 6 كفتة · 4 ريش · 4 بانيه · 2 طاجن خضار · 4 كبيبة · 4 سمبوسك · ورق عنب · 6 شوربة لسان عصفور · أرز بسمتي · سلطات · عيش</div>
+    </div>
+
+    <div class="tray-card">
+      <div class="tray-header">
+        <div class="tray-name">صنية اللمة</div>
+        <span class="tray-serves">6 - 8 أفراد</span>
+      </div>
+      <div class="tray-price">4,632 <span>جنيه</span></div>
+      <div class="tray-contents">فرخة ونص · 6 شيش طاووق · 6 صدور مشوى · 9 كباب · 9 كفتة · 6 ريش · 6 بانيه · 3 طاجن خضار · 6 كبيبة · 6 سمبوسك · ورق عنب · 9 شوربة لسان عصفور · أرز بسمتي · سلطات · عيش</div>
+    </div>
+
+    <div class="tray-card">
+      <div class="tray-header">
+        <div class="tray-name">صنية التوفير</div>
+        <span class="tray-serves">2 أفراد</span>
+      </div>
+      <div class="tray-price">784 <span>جنيه</span></div>
+      <div class="tray-contents">نص فرخة مشوية · رغيف حواوشي · 4 قطع شيش طاووق · ورق عنب · بطاطس · أرز · عيش · سلطات</div>
+    </div>
+
+    <div class="tray-card">
+      <div class="tray-header">
+        <div class="tray-name">صنية الحريفة</div>
+        <span class="tray-serves">2 أفراد</span>
+      </div>
+      <div class="tray-price">896 <span>جنيه</span></div>
+      <div class="tray-contents">نص فرخة شيش تركي · 2 قطعة بانيه · 3 قطعة كفتة · ورق عنب · بطاطس · أرز · عيش · سلطات</div>
+    </div>
+
+    <div class="tray-card">
+      <div class="tray-header">
+        <div class="tray-name">صنية السعادة</div>
+        <span class="tray-serves">2 - 3 أفراد</span>
+      </div>
+      <div class="tray-price">1,042 <span>جنيه</span></div>
+      <div class="tray-contents">3 قطع كفتة · 3 قطع طرب · 4 قطع سجق · 5 قطع دجاج · رغيف حواوشي · ورق عنب · بطاطس · أرز · عيش · سلطات</div>
+    </div>
+  </div>
+
+  <!-- Oriental -->
+  <div class="section" id="oriental">
+    <div class="section-header">
+      <div class="section-icon">🫕</div>
+      <div><div class="section-title">أكلات شرقية</div><div class="section-subtitle">Oriental Dishes</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">موزة ضاني مع فتة أو أرز بسمتي</div></div><div class="price-badge">639 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">موزة بتلو</div></div><div class="price-badge">639 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ورقة لحمة</div></div><div class="price-badge">432 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فتة كوارع</div></div><div class="price-badge">396 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Italian -->
+  <div class="section" id="italian">
+    <div class="section-header">
+      <div class="section-icon">🍝</div>
+      <div><div class="section-title">إيطالي</div><div class="section-subtitle">Italian Dishes</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">استيك تندرلوين</div></div><div class="price-badge">516 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بيكاتا لحم</div></div><div class="price-badge">516 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بيكاتا الدجاج</div></div><div class="price-badge">446 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">استيك دجاج بكريمة المشروم</div></div><div class="price-badge">446 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Tajen -->
+  <div class="section" id="tajen">
+    <div class="section-header">
+      <div class="section-icon">🍲</div>
+      <div><div class="section-title">طواجن</div><div class="section-subtitle">Tajen</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">طاجن تورلى باللحمة</div></div><div class="price-badge">366 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">طاجن بطاطس باللحمة</div></div><div class="price-badge">366 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">طاجن كباب حلة</div></div><div class="price-badge">371 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">طاجن لحمة بالبصل</div></div><div class="price-badge">371 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">طاجن ورق عنب باللحمة</div></div><div class="price-badge">386 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">طاجن لسان عصفور باللحمة</div></div><div class="price-badge">360 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Pasta -->
+  <div class="section" id="pasta">
+    <div class="section-header">
+      <div class="section-icon">🍝</div>
+      <div><div class="section-title">باستا</div><div class="section-subtitle">PASTA</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">نجرسكو فراخ</div></div><div class="price-badge">224 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">لازنيا فراخ</div></div><div class="price-badge">237 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فوتيتشيني</div></div><div class="price-badge">237 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">الفريدو</div></div><div class="price-badge">251 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">نجرسكو لحم</div></div><div class="price-badge">257 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">لازنيا لحم</div></div><div class="price-badge">257 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بشاميل</div></div><div class="price-badge">224 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">نجرسكو جمبري</div></div><div class="price-badge">277 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">نجرسكو سي فوود</div></div><div class="price-badge">291 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">لازنيا سي فوود</div></div><div class="price-badge">277 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">جمبري وايت صوص</div></div><div class="price-badge">291 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سي فوود وايت صوص</div></div><div class="price-badge">291 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ريد صوص سادة</div></div><div class="price-badge">112 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">وايت صوص سادة</div></div><div class="price-badge">132 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Pizza -->
+  <div class="section" id="pizza">
+    <div class="section-header">
+      <div class="section-icon">🍕</div>
+      <div><div class="section-title">بيتزا</div><div class="section-subtitle">PIZZA</div></div>
+    </div>
+    <div class="size-note">
+      <span>وسط</span>
+      <span>كبير</span>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">مرجريتا</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">179 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">216 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">خضروات</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">179 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">234 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">مشكل جبن</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">191 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">239 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">شيش طاووق</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">234 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">322 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">كرانشي</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">221 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">305 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">تشيكن رانش</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">234 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">351 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">تشيكن باربيكيو</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">234 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">351 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">تشيكن ميكس</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">234 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">351 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سلامي</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">206 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">277 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سوبر سوبريم</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">234 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">322 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">جمبري</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">472 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">551 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سي فود</div></div><div class="price-dual"><div class="price-row"><span class="price-label">وسط</span><span class="price-num">502 جـ</span></div><div class="price-row"><span class="price-label">كبير</span><span class="price-num">581 جـ</span></div></div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فورسيزون دبل صوص (نص باربيكيو - نص رانش)</div></div><div class="price-badge">329 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فورسيزون (رانش - باربيكيو - مفروم - جبن)</div></div><div class="price-badge">365 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Sandwiches -->
+  <div class="section" id="sandwiches">
+    <div class="section-header">
+      <div class="section-icon">🥪</div>
+      <div><div class="section-title">سندوتشات</div><div class="section-subtitle">Sandwiches</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">كفته</div></div><div class="price-badge">177 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">كلاسيك برجر</div></div><div class="price-badge">172 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">تشيز برجر</div></div><div class="price-badge">184 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">دبل برجر</div></div><div class="price-badge">276 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بانيه</div></div><div class="price-badge">166 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سوبر كرانشي</div></div><div class="price-badge">166 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">زنجر سوبريم</div></div><div class="price-badge">166 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">شيش طاووق</div></div><div class="price-badge">172 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">صدور مشوي</div></div><div class="price-badge">177 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">رول كفتة</div></div><div class="price-badge">177 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">رول شيش طاووق</div></div><div class="price-badge">172 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">رول سوبر كرانشي</div></div><div class="price-badge">166 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">رول بطاطس موزاريلا</div></div><div class="price-badge">86 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Rizo -->
+  <div class="section" id="rizo">
+    <div class="section-header">
+      <div class="section-icon">🌯</div>
+      <div><div class="section-title">ريزو</div><div class="section-subtitle">RIZO</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">ريزو ستربس</div></div><div class="price-badge">179 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ريزو تشيكن باربيكيو</div></div><div class="price-badge">179 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ريزو صدور مشوي</div></div><div class="price-badge">179 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ريزو شيش مشوي</div></div><div class="price-badge">179 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ريزو كفتة</div></div><div class="price-badge">186 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Feteer -->
+  <div class="section" id="feteer">
+    <div class="section-header">
+      <div class="section-icon">🫓</div>
+      <div><div class="section-title">فطير وسند فطير</div><div class="section-subtitle">Feteer & SandFeteer</div></div>
+    </div>
+    <div style="margin-bottom:16px;font-size:13px;font-weight:600;color:var(--brown);padding:8px 0;">سند فطير</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">مشكل لحوم</div></div><div class="price-badge">207 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سوبر كرانشي</div></div><div class="price-badge">207 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">مشكل جبن</div></div><div class="price-badge">207 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">شاورما فراخ</div></div><div class="price-badge">207 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بسطرمه كيري</div></div><div class="price-badge">207 جـ</div></div>
+    </div>
+    <div style="margin:24px 0 16px;font-size:13px;font-weight:600;color:var(--brown);padding:8px 0;">فطير</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">ميكس جبن</div></div><div class="price-badge">259 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بسطرمه كيري</div></div><div class="price-badge">346 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ميكس تشيكن</div></div><div class="price-badge">299 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ميكس لحوم</div></div><div class="price-badge">299 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سجق بسطرمه كيري</div></div><div class="price-badge">349 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Soups -->
+  <div class="section" id="soups">
+    <div class="section-header">
+      <div class="section-icon">🍜</div>
+      <div><div class="section-title">شوربة</div><div class="section-subtitle">Soups</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">لسان عصفور</div></div><div class="price-badge">99 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">مشروم بالكريمة</div></div><div class="price-badge">146 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فراخ بالكريمة</div></div><div class="price-badge">159 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فراخ بالمشروم</div></div><div class="price-badge">169 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Appetizers -->
+  <div class="section" id="appetizers">
+    <div class="section-header">
+      <div class="section-icon">🥗</div>
+      <div><div class="section-title">مقبلات</div><div class="section-subtitle">Appetizers</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">ورق عنب</div></div><div class="price-badge">118 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بطاطس</div></div><div class="price-badge">66 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بطاطس فرسكس</div></div><div class="price-badge">92 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بطاطس بالجبنة</div></div><div class="price-badge">99 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">مشكل مقبلات وسط</div></div><div class="price-badge">151 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">مشكل مقبلات كبير</div></div><div class="price-badge">224 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Salads -->
+  <div class="section" id="salads">
+    <div class="section-header">
+      <div class="section-icon">🥙</div>
+      <div><div class="section-title">سلطات</div><div class="section-subtitle">Salads</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">طحينة</div></div><div class="price-badge">39 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سلطة خضراء</div></div><div class="price-badge">37 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ثومية</div></div><div class="price-badge">37 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">مخلل</div></div><div class="price-badge">33 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">كلوسلو</div></div><div class="price-badge">43 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">سيزر سلاد</div></div><div class="price-badge">188 جـ</div></div>
+    </div>
+  </div>
+
+  <!-- Sides -->
+  <div class="section" id="sides">
+    <div class="section-header">
+      <div class="section-icon">🍚</div>
+      <div><div class="section-title">أطباق جانبية</div><div class="section-subtitle">Side Dishes</div></div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="item-info"><div class="item-name">أرز سادة</div></div><div class="price-badge">69 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">فتة سادة</div></div><div class="price-badge">111 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">ملوخية سادة</div></div><div class="price-badge">114 جـ</div></div>
+      <div class="menu-item"><div class="item-info"><div class="item-name">بامية سادة</div></div><div class="price-badge">126 جـ</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="menu-footer">
+  <span class="footer-ornament">🐟 🌊 🦐 🌊 🐠</span>
+  <p class="footer-text">الأسعار شاملة الضريبة &nbsp;·&nbsp; نتمنى لكم شهية طيبة</p>
+</div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    event.target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+
+  // Generate floating background icons
+  const icons = ['🐟','🦐','🦞','🐠','🦑','🍤','🍣','🌊','⚓','🐡','🦀','🍽️','🥘','🍢','🫙'];
+  const canvas = document.getElementById('bgCanvas');
+  for (let i = 0; i < 30; i++) {
+    const el = document.createElement('span');
+    el.className = 'bg-icon';
+    el.textContent = icons[Math.floor(Math.random() * icons.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.top = Math.random() * 100 + 'vh';
+    el.style.fontSize = (18 + Math.random() * 22) + 'px';
+    el.style.animationDuration = (18 + Math.random() * 25) + 's';
+    el.style.animationDelay = -(Math.random() * 30) + 's';
+    el.style.opacity = (0.04 + Math.random() * 0.07).toFixed(2);
+    canvas.appendChild(el);
+  }
+</script>
+</body>
+</html>
